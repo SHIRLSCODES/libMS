@@ -28,6 +28,15 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+            $user = Auth::user();
+
+                if (!$user->is_active) {
+                    Auth::logout();
+
+                    return back()->withErrors([
+                        'email' => 'Your profile has been deactivated.',])->onlyInput('email');
+                }
+
         return redirect()->intended(route('dashboard', absolute: false));
     }
 

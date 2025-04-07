@@ -16,10 +16,10 @@ class BookController extends Controller
     public function index()
     {
         if(auth()->user()->isAdmin()){
-            $books = Book::all();
+            $books = Book::paginate(5);
         }
         else{
-            $books = Book::where('is_archived', false)->get();
+            $books = Book::where('is_archived', false)->paginate(5);
         }
         return view('books.index', compact('books'));
     }
@@ -41,7 +41,7 @@ class BookController extends Controller
     {
         $book = Book::create($request ->validated());
 
-        return redirect()->route('books.index')->with('success', 'Book created successfully');
+        return redirect()->route('books.index')->with('success','Book created successfully');
     }
 
     public function archiveBook(Request $request, string $id){

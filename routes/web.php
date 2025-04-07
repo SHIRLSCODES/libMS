@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BorrowController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -21,6 +22,12 @@ Route::get('/dashboard', function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/admin', [UserController::class, 'index'])->name('admin.index')->middleware('is_admin');
+    Route::get('/admin/create', [UserController::class, 'create'])->name('admin.create')->middleware('is_admin');
+    Route::post('/admin', [UserController::class, 'store'])->name('admin.store')->middleware('is_admin');
+    Route::patch('/admin/{id}/deactivate', [UserController::class, 'deactivate'])->name('admin.deactivate');
+    Route::patch('/admin/{id}/activate', [UserController::class, 'activate'])->name('admin.activate');
 
     Route::get('/books', [BookController::class, 'index'])->name('books.index');
     Route::get('/books/create', [BookController::class, 'create'])->name('books.create')->middleware('is_admin');

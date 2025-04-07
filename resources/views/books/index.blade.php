@@ -27,6 +27,8 @@
                         document.getElementById('error-message')?.remove();
                        }, 10000);
                     </script> 
+                 
+
                     @if(auth()->user()->isAdmin())
                         <a href="{{ route('books.create') }}" class="px-4 py-3 bg-green-600 text-white rounded-md mr-4">
                             Add a New Book
@@ -69,6 +71,11 @@
                             <a href="{{ route('books.show', $book) }}" class="text-blue-500 hover:underline mt-4 inline-block">View Details</a>
                         </div>
                     @endforeach
+
+                    <div class="mt-6 flex justify-center">
+                        {{ $books->links() }}
+                    </div>
+
                 </div>
             </div>
         </div>

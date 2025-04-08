@@ -27,7 +27,7 @@
                         document.getElementById('error-message')?.remove();
                        }, 10000);
                     </script> 
-                 
+
 
                     @if(auth()->user()->isAdmin())
                         <a href="{{ route('books.create') }}" class="px-4 py-3 bg-green-600 text-white rounded-md mr-4">
@@ -41,6 +41,7 @@
 
                     <h1 class="text-2xl font-bold mb-4">Library Books</h1>
 
+
                     @if (auth()->user()->isAdmin())
                         <div class="flex space-x-4 mb-6">
                             <a href="{{ route('books.index') }}" class="px-4 py-2 bg-gray-500 text-white rounded-md">All Books</a>
@@ -52,7 +53,7 @@
                         <input type="hidden" name="filter" value="{{ request('filter') }}">
 
                         <label for="category" class="text-white font-semibold">Filter by Category:</label>
-                        
+
                         <select name="category" id="category" class="ml-2 p-2 rounded text-black">
                             <option value="" class="text-black">All</option>
                             @foreach ($categories as $category)
@@ -64,43 +65,14 @@
                     
                         <button type="submit" class="ml-4 bg-blue-600 text-white px-4 py-2 rounded">Filter</button>
                     </form>
-                    
+             
                 @if ($books->count())
-                    @foreach ($books as $book)
-                        <div class="mb-4 p-4 border border-gray-300 dark:border-gray-600 rounded-lg">
-                            <p class="text-lg font-semibold">{{ $book->title }}</p>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">By {{ $book->author }}</p>
-                            <p class="text-sm text-gray-600">ISBN: {{ $book->isbn }}</p>
-                            <p class="text-sm text-gray-600">Copies available: {{ $book->copies }}</p>
-                            <p class="text-sm text-gray-600">Category: {{$book->category->name ?? ''}}</p>
-                            @if(auth()->user()->isAdmin())
-                            <p class="text-sm text-gray-600">
-                                Created by: {{ $book->creator->name ?? 'N/A' }}
-                            </p>    
-                            @endif
-                            <form method="POST" action="{{ route('borrow.store') }}" class="mt-2">
-                                @csrf
-                                <input type="hidden" name="book_id" value="{{ $book->id }}">
-                                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4">Borrow</button> 
-                            </form>
-                            @if(auth()->user()->isAdmin())                           
-                                @if(!$book->is_archived)
-                                <form method="POST" action="{{route('books.archive', $book->id)}}">
-                                @csrf
-                                @method('PATCH')
-                                <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Archive Book</button>
-                                </form>
-                                @else
-                                <form method="POST" action="{{route('books.unarchive', $book->id)}}">
-                                @csrf
-                                @method('PATCH')
-                                <button type="submit" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">unarchive Book</button>
-                                </form>
-                                @endif
-                            @endif
-                            <a href="{{ route('books.show', $book) }}" class="text-blue-500 hover:underline mt-4 inline-block">View Details</a>
-                        </div>
-                    @endforeach
+                
+                <input type="text" id="book-search" placeholder="Search books by title or author..." class="mb-4 p-2 border border-gray-300 rounded w-full text-black">
+                <div id="book-results">
+                    @include('books.partials.book-list', ['books' => $books])
+                </div>
+
 
                     <div class="mt-6 flex justify-center">
                         {{ $books->withQueryString()->links() }}
@@ -111,10 +83,27 @@
                         No books found for your filter. Try adjusting the category or view all books.
                     </div>
                 @endif
+    
                 </div>
             </div>
         </div>
     </div>
-    
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $('#book-search').on('keyup', function() {
+                let query = $(this).val();
+
+                $.ajax({
+                    url: '{{ route('books.search') }}',
+                    type: 'GET',
+                    data: { query: query },
+                    success: function(data) {
+                        $('#book-results').html(data);
+                    }
+                });
+            });
+        </script>
+
 </x-app-layout>
 

@@ -28,8 +28,12 @@ Route::get('/dashboard', function () {
     Route::post('/admin', [UserController::class, 'store'])->name('admin.store')->middleware('is_admin');
     Route::patch('/admin/{id}/deactivate', [UserController::class, 'deactivate'])->name('admin.deactivate');
     Route::patch('/admin/{id}/activate', [UserController::class, 'activate'])->name('admin.activate');
+    Route::get('/admin/search', [UserController::class, 'search'])->name('admin.search');
+
 
     Route::get('/books', [BookController::class, 'index'])->name('books.index');
+    Route::get('/books/search', [BookController::class, 'search'])->name('books.search');
+
     Route::get('/books/create', [BookController::class, 'create'])->name('books.create')->middleware('is_admin');
     Route::get('/books/{book}/show', [BookController::class, 'show'])->name('books.show');
     Route::get('/{book}/edit', [BookController::class, 'edit'])->name('books.edit')->middleware('is_admin');

@@ -71,4 +71,16 @@ class UserController extends Controller
             return redirect()->back()->with('success', 'User activated successfully.');
         }
 
+        public function search(Request $request)
+            {
+                $query = $request->input('query');
+
+                $users = User::where('name', 'like', "%$query%")
+                            ->orWhere('email', 'like', "%$query%")
+                            ->paginate(3);
+
+                return view('admin.partials.user-list', compact('users'))->render();
+            }
+
+
 }

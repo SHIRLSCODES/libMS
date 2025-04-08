@@ -41,6 +41,31 @@
 
                     <h1 class="text-2xl font-bold mb-4">Library Books</h1>
 
+                    @if (auth()->user()->isAdmin())
+                        <div class="flex space-x-4 mb-6">
+                            <a href="{{ route('books.index') }}" class="px-4 py-2 bg-gray-500 text-white rounded-md">All Books</a>
+                            <a href="{{ route('books.index', ['filter' => 'mine']) }}" class="px-4 py-2 bg-blue-600 text-white rounded-md">My Books</a>
+                        </div>
+                    @endif
+
+                    <form method="GET" action="{{ route('books.index') }}" class="mb-6">
+                        <input type="hidden" name="filter" value="{{ request('filter') }}">
+
+                        <label for="category" class="text-white font-semibold">Filter by Category:</label>
+                        
+                        <select name="category" id="category" class="ml-2 p-2 rounded text-black">
+                            <option value="" class="text-black">All</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }} class="text-black">
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    
+                        <button type="submit" class="ml-4 bg-blue-600 text-white px-4 py-2 rounded">Filter</button>
+                    </form>
+                    
+                @if ($books->count())
                     @foreach ($books as $book)
                         <div class="mb-4 p-4 border border-gray-300 dark:border-gray-600 rounded-lg">
                             <p class="text-lg font-semibold">{{ $book->title }}</p>
@@ -48,12 +73,17 @@
                             <p class="text-sm text-gray-600">ISBN: {{ $book->isbn }}</p>
                             <p class="text-sm text-gray-600">Copies available: {{ $book->copies }}</p>
                             <p class="text-sm text-gray-600">Category: {{$book->category->name ?? ''}}</p>
+                            @if(auth()->user()->isAdmin())
+                            <p class="text-sm text-gray-600">
+                                Created by: {{ $book->creator->name ?? 'N/A' }}
+                            </p>    
+                            @endif
                             <form method="POST" action="{{ route('borrow.store') }}" class="mt-2">
                                 @csrf
                                 <input type="hidden" name="book_id" value="{{ $book->id }}">
                                 <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4">Borrow</button> 
                             </form>
-                            @if(auth()->user()->isAdmin())
+                            @if(auth()->user()->isAdmin())                           
                                 @if(!$book->is_archived)
                                 <form method="POST" action="{{route('books.archive', $book->id)}}">
                                 @csrf
@@ -73,9 +103,14 @@
                     @endforeach
 
                     <div class="mt-6 flex justify-center">
-                        {{ $books->links() }}
+                        {{ $books->withQueryString()->links() }}
                     </div>
 
+                    @else
+                    <div class="mt-6 p-4 bg-yellow-100 text-yellow-800 rounded shadow">
+                        No books found for your filter. Try adjusting the category or view all books.
+                    </div>
+                @endif
                 </div>
             </div>
         </div>

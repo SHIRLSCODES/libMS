@@ -10,19 +10,31 @@ use App\Models\Category;
 
 class BookController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        if(auth()->user()->isAdmin()){
-            $books = Book::paginate(5);
+        $query = Book::query();
+    
+        if (auth()->user()->isAdmin()) {
+            $filter = $request->query('filter');
+    
+            if ($filter === 'mine') {
+                $query->where('created_by', auth()->id());
+            }
+        } else {
+            $query->where('is_archived', false);
         }
-        else{
-            $books = Book::where('is_archived', false)->paginate(5);
+    
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->query('category'));
         }
-        return view('books.index', compact('books'));
+    
+        $books = $query->paginate(5);
+    
+        $categories = Category::all();
+    
+        return view('books.index', compact('books', 'categories'));
     }
+    
 
     /**
      * Show the form for creating a new resource.
@@ -40,6 +52,9 @@ class BookController extends Controller
     public function store(SaveBookRequest $request)
     {
         $book = Book::create($request ->validated());
+
+        $book->created_by = auth()->id();
+        $book->save();
 
         return redirect()->route('books.index')->with('success','Book created successfully');
     }

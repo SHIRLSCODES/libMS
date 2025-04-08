@@ -17,10 +17,17 @@ class Book extends Model
         'copies',
         'is_archived',
         'category_id',
+        'created_by',
     ];
 
     public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
 }

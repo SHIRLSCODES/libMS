@@ -29,6 +29,7 @@ Route::get('/dashboard', function () {
     Route::patch('/admin/{id}/deactivate', [UserController::class, 'deactivate'])->name('admin.deactivate');
     Route::patch('/admin/{id}/activate', [UserController::class, 'activate'])->name('admin.activate');
     Route::get('/admin/search', [UserController::class, 'search'])->name('admin.search');
+    Route::get('/admin/borrowed-books', [UserController::class, 'borrowedBooks'])->name('borrowed-books.index');
 
 
     Route::get('/books', [BookController::class, 'index'])->name('books.index');

@@ -2,9 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use Auth;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+
 use Symfony\Component\HttpFoundation\Response;
 
 class CheckIfUserIsActive
@@ -16,10 +17,11 @@ class CheckIfUserIsActive
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && !Auth::user()->is_active){
+        if(Auth::user() && !Auth::user()->is_active)
+        {
             Auth::logout();
 
-            return redirect()->route('login')->with('error', 'You have been deactivated');
+            return redirect()->route('login')->with('error', 'You have been deactivated, please contact the admin'); 
         }
 
         return $next($request);

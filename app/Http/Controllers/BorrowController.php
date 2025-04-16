@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Borrow;
 use App\Models\Book;
+use App\Events\BookBorrowed;
 
 class BorrowController extends Controller
 {
@@ -53,6 +54,8 @@ class BorrowController extends Controller
             'book_id' => $request->book_id,
             'borrowed_at' => now(),
         ]);
+
+        event(new BookBorrowed(auth()->user(), $book));
 
         return redirect()->route('books.index')->with('success', 'Book borrowed successfully!');
     }

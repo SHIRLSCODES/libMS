@@ -16,6 +16,11 @@ class Borrow extends Model
         'returned_at',
     ];
 
+    protected $casts = [
+        'borrowed_at' => 'datetime',
+        'returned_at' => 'datetime',
+    ];
+    
   
     public function book()
     {

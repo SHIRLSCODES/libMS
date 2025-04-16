@@ -34,7 +34,7 @@ class AuthenticatedSessionController extends Controller
                     Auth::logout();
 
                     return back()->withErrors([
-                        'email' => 'Your profile has been deactivated.',])->onlyInput('email');
+                        'email' => 'Your profile has been deactivated, please contact the admin.',])->onlyInput('email');
                 }
 
         return redirect()->intended(route('dashboard', absolute: false));

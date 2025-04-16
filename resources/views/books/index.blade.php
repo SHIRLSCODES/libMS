@@ -39,6 +39,10 @@
                         See your borrowed books
                     </a>
 
+                    <a href="{{ route('borrowed-books.index') }}" class="px-4 py-3 bg-green-600 text-white rounded-md mb-6 inline-block">
+                        See borrowed books
+                    </a>
+
                     <h1 class="text-2xl font-bold mb-4">Library Books</h1>
 
 
@@ -89,7 +93,7 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
             $('#book-search').on('keyup', function() {
                 let query = $(this).val();

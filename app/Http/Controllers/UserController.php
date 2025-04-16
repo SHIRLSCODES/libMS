@@ -4,8 +4,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Borrow;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Events\UserWasCreated;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -44,12 +46,16 @@ class UserController extends Controller
             'is_admin' => ['nullable', 'boolean'],
         ]);
 
+        $plainPassword = $request->input('password');
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => Hash::make($plainPassword),
             'is_admin' => $request->has('is_admin'),
         ]);
+
+        UserWasCreated::dispatch($user, $plainPassword);
 
         return redirect()->route('admin.index')->with('sucess', 'User created successfully.');
     }
@@ -81,6 +87,12 @@ class UserController extends Controller
 
                 return view('admin.partials.user-list', compact('users'))->render();
             }
+     
+        public function borrowedBooks()
+                {
+                    $borrows = Borrow::with(['book', 'user'])->paginate(5);
 
+                    return view('admin.borrowed-books.index', compact('borrows'));
+                }
 
 }

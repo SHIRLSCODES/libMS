@@ -39,9 +39,11 @@
                         See your borrowed books
                     </a>
 
+                    @if(auth()->user()->isAdmin())
                     <a href="{{ route('borrowed-books.index') }}" class="px-4 py-3 bg-green-600 text-white rounded-md mb-6 inline-block">
                         See borrowed books
                     </a>
+                    @endif
 
                     <h1 class="text-2xl font-bold mb-4">Library Books</h1>
 
@@ -94,10 +96,14 @@
     </div>
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script>
-            $('#book-search').on('keyup', function() {
-                let query = $(this).val();
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js"></script>
 
+
+        <script>
+            $('#book-search').on('keyup', $.debounce(3000,function() {
+
+                let query = $(this).val();
+               
                 $.ajax({
                     url: '{{ route('books.search') }}',
                     type: 'GET',
@@ -106,7 +112,7 @@
                         $('#book-results').html(data);
                     }
                 });
-            });
+            }));
         </script>
 
 </x-app-layout>

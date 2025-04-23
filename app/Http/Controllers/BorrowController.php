@@ -53,6 +53,7 @@ class BorrowController extends Controller
             'user_id' => auth()->id(),
             'book_id' => $request->book_id,
             'borrowed_at' => now(),
+            'due_date' => now()->addDays(3),
         ]);
 
         event(new BookBorrowed(auth()->user(), $book));

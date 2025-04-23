@@ -34,6 +34,7 @@
                             <th class="border p-2">Title</th>
                             <th class="border p-2">Author</th>
                             <th class="border p-2">Borrowed Date</th>
+                            <th class="border p-2">Due Date</th>
                             <th class="border p-2">Returned Date</th>
                             <th class="border p-2">Actions</th>
                         </tr>
@@ -44,6 +45,7 @@
                                 <td class="border p-2 text-white">{{ $borrow->book->title }}</td>
                                 <td class="border p-2 text-white">{{ $borrow->book->author }}</td>
                                 <td class="border p-2 text-white">{{ $borrow->borrowed_at }}</td>
+                                <td class="border p-2 text-white">{{ $borrow->due_date }}</td>
                                <td class="border p-2">
                                     {{ $borrow->returned_at ? $borrow->returned_at : 'Not returned yet' }}
                                 </td>

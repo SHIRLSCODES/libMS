@@ -55,11 +55,13 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js"></script>
 
     <script>
-        $('#user-search').on('keyup', function() {
+        $('#user-search').on('keyup', $.debounce(3000,function() {
+            
             let query = $(this).val();
-    
+            
             $.ajax({
                 url: '{{ route('admin.search') }}',
                 type: 'GET',
@@ -68,7 +70,7 @@
                     $('#user-results').html(data);
                 }
             });
-        });
+        }));
     </script>
     
 

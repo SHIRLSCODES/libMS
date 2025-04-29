@@ -16,9 +16,12 @@
                     <p class="text-lg text-gray-600 dark:text-gray-300 mb-2"><strong>Copies Available:</strong> {{ $book->copies }}</p>
                     <p class="text-lg text-gray-600 dark:text-gray-300 mb-6"><strong>ISBN:</strong> {{ $book->isbn }}</p>
 
+                    
+                    @if(auth()->user()->isAdmin())
                     <a href="{{ route('books.edit', $book->id) }}" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md transition duration-300">
                         Edit Book
                     </a> 
+                    @endif
 
                 </div>
             </div>

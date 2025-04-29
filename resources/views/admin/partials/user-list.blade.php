@@ -20,23 +20,23 @@
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                     @if ($user->is_active)
-                    <form action="{{ route('admin.deactivate', $user->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to deactivate this user?');">
-                        @csrf
-                        @method('PATCH')
-                        <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm">
-                            Deactivate
-                        </button>
-                    </form>
-                @else
-                    <form action="{{ route('admin.activate', $user->id) }}" method="POST" onsubmit="return confirm('activate this user?');">
-                        @csrf
-                        @method('PATCH')
-                        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm">
-                            Activate
-                        </button>
-                    </form>
-                @endif
-                </td>
+                        <form action="{{ route('admin.deactivate', $user->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to deactivate this user?');">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm">
+                                Deactivate
+                            </button>
+                        </form>
+                    @else
+                        <form action="{{ route('admin.activate', $user->id) }}" method="POST" onsubmit="return confirm('activate this user?');">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm">
+                                Activate
+                            </button>
+                        </form>
+                    @endif
+                </td> 
             </tr>
         @endforeach
     </tbody>

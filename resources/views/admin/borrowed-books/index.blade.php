@@ -13,7 +13,7 @@
                     <th class="px-4 py-2 text-left text-black dark:text-white">Status</th>
                 </tr>
             </thead>
-            <tbody>dark:
+            <tbody>
                 @forelse($borrows as $borrow)
                     <tr>
                         <td class="border-t px-4 py-2  text-blue dark:text-gray-300">{{ $borrow->book->title }}</td>

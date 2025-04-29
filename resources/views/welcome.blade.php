@@ -2,7 +2,7 @@
     <div class="min-h-screen flex flex-col justify-center bg-gray-100 dark:bg-gray-900">
         <div class="text-center">
             <h1 class="text-5xl font-extrabold text-gray-900 dark:text-white mb-8">
-                Welcome to Smiles Library Management System
+                Welcome to Smiles Library Services
             </h1>
 
             <div class="mt-6 space-x-6">

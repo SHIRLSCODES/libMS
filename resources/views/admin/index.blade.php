@@ -35,12 +35,12 @@
                         </a>
                     @endif
 
-                    <h1 class="text-2xl font-bold mb-4 mt-4">Active Users</h1>
+                    <h1 class="text-2xl font-bold mb-4 mt-4">Users</h1>
 
      
                        
                     <input type="text" id="user-search" placeholder="Search users by name or email..." class="mb-4 p-2 border border-gray-300 rounded w-full text-black">
-
+                    
                     <div id="user-results">
                             @include('admin.partials.user-list', ['users' => $users])
                    </div>

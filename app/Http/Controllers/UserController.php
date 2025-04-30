@@ -58,7 +58,7 @@ class UserController extends Controller
 
         UserWasCreated::dispatch($user, $plainPassword);
 
-        return redirect()->route('admin.index')->with('sucess', 'User created successfully.');
+        return redirect()->route('admin.index')->with('success', 'User created successfully.');
     }
 
     public function deactivate($id)

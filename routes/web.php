@@ -30,6 +30,9 @@ Route::get('/dashboard', function () {
     Route::patch('/admin/{id}/activate', [UserController::class, 'activate'])->name('admin.activate');
     Route::get('/admin/search', [UserController::class, 'search'])->name('admin.search');
     Route::get('/admin/borrowed-books', [UserController::class, 'borrowedBooks'])->name('borrowed-books.index');
+    Route::get('/admin/{user}/edit', [UserController::class, 'edit'])->name('admin.edit')->middleware('is_admin');
+    Route::patch('/admin/{user}/update', [UserController::class, 'update'])->name('admin.update')->middleware('is_admin');
+
 
 
     Route::get('/books', [BookController::class, 'index'])->name('books.index');
@@ -37,8 +40,8 @@ Route::get('/dashboard', function () {
 
     Route::get('/books/create', [BookController::class, 'create'])->name('books.create')->middleware('is_admin');
     Route::get('/books/{book}/show', [BookController::class, 'show'])->name('books.show');
-    Route::get('/{book}/edit', [BookController::class, 'edit'])->name('books.edit')->middleware('is_admin');
-    Route::patch('/books/{book}', [BookController::class, 'update'])->name('books.update')->middleware('is_admin');
+    Route::get('/books/{book}/edit', [BookController::class, 'edit'])->name('books.edit')->middleware('is_admin');
+    Route::patch('/books/{book}/update', [BookController::class, 'update'])->name('books.update')->middleware('is_admin');
 
     Route::post('/books', [BookController::class, 'store'])->name('books.store')->middleware('is_admin');
     Route::patch('/books/{id}/archive', [BookController::class, 'archiveBook'])->name('books.archive');

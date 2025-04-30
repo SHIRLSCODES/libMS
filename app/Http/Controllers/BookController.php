@@ -54,6 +54,7 @@ class BookController extends Controller
         $book = Book::create($request ->validated());
 
         $book->created_by = auth()->id();
+        
         $book->save();
 
         return redirect()->route('books.index')->with('success','Book created successfully');

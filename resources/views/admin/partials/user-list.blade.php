@@ -18,12 +18,12 @@
                 <td class="px-6 py-4 whitespace-nowrap">
                     {{ $user->is_active ? 'Active' : 'Inactive' }}
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
+                <td class="px-6 py-4 whitespace-nowrap ">
                     @if ($user->is_active)
                         <form action="{{ route('admin.deactivate', $user->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to deactivate this user?');">
                             @csrf
                             @method('PATCH')
-                            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm">
+                            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm mb-6">
                                 Deactivate
                             </button>
                         </form>
@@ -31,10 +31,16 @@
                         <form action="{{ route('admin.activate', $user->id) }}" method="POST" onsubmit="return confirm('activate this user?');">
                             @csrf
                             @method('PATCH')
-                            <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm">
+                            <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm mb-6">
                                 Activate
                             </button>
                         </form>
+                        
+                    @endif
+                    @if(auth()->user()->isAdmin())
+                    <a href="{{ route('admin.edit', $user->id) }}" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md transition duration-300">
+                        Edit user
+                    </a> 
                     @endif
                 </td> 
             </tr>

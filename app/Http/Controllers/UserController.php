@@ -61,6 +61,28 @@ class UserController extends Controller
         return redirect()->route('admin.index')->with('success', 'User created successfully.');
     }
 
+    public function edit(User $user)
+    {
+
+        return view ('admin.edit', compact('user'));
+    }
+
+
+    public function update(Request $request, User $user)
+    {
+        $validatedData = $request->validate([
+            'name' => ['string', 'max:255'],
+            'email' => ['string', 'lowercase', 'email', 'max:255'],
+            'is_admin' => ['nullable', 'boolean'],
+        ]);
+    
+        $validatedData['is_admin'] = $validatedData['is_admin'] ?? false;
+        
+        $user->update($validatedData);
+
+        return redirect()->route('admin.index')->with('success', 'User successfully updated');
+    }
+
     public function deactivate($id)
         {
             $user = User::findOrFail($id);

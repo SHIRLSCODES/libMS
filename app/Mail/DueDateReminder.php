@@ -18,7 +18,7 @@ class DueDateReminder extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(public Borrow $borrow, public string $status)
+    public function __construct(public Borrow $borrow, public string $status, public string $fine)
     {
         
     }

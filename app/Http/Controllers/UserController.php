@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Borrow;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\LibraryCard;
 use App\Events\UserWasCreated;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -21,9 +22,8 @@ class UserController extends Controller
     public function index()
     {
        
-        $users = User::paginate(3);
-        // dd($users);
-        
+        $users = User::with('libraryCard')->paginate(3);
+
         return view('admin.index', compact('users'));
     }
 
@@ -63,7 +63,6 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-
         return view ('admin.edit', compact('user'));
     }
 

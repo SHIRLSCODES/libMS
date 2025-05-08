@@ -11,6 +11,7 @@
                     <th class="px-4 py-2 text-left text-black dark:text-white">Borrowed By</th>
                     <th class="px-4 py-2 text-left text-black dark:text-white">Borrowed At</th>
                     <th class="px-4 py-2 text-left text-black dark:text-white">Status</th>
+                    <th class="px-4 py-2 text-left text-black dark:text-white">Fine</th>
                 </tr>
             </thead>
             <tbody>
@@ -20,10 +21,19 @@
                         <td class="border-t px-4 py-2 text-blue dark:text-gray-300">{{ $borrow->user->name }} ({{ $borrow->user->email }})</td>
                         <td class="border-t px-4 py-2 text-blue dark:text-gray-300">{{ $borrow->borrowed_at->format('d M Y') }}</td>
                         <td class="border-t px-4 py-2">
-                            @if($borrow->returned_at)
-                                <span class="text-green-600">Returned</span>
+                                @if($borrow->returned_at)
+                                 <span class="text-green-600 font-semibold">Returned</span>
+                                @elseif($borrow->due_date && now()->greaterThan($borrow->due_date))
+                                 <span class="text-red-600 font-semibold">Overdue</span>
+                                @else
+                                 <span class="text-blue-600 font-semibold">Borrowed</span>
+                                @endif
+                        </td>
+                        <td class="border p-2">
+                            @if($borrow->due_date && is_null($borrow->returned_at) && now()->greaterThan($borrow->due_date))
+                                ₦{{ number_format($borrow->calculateFine()) }}
                             @else
-                                <span class="text-red-600">Not Returned</span>
+                                -
                             @endif
                         </td>
                     </tr>

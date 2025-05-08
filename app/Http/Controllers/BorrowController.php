@@ -62,7 +62,8 @@ class BorrowController extends Controller
     }
 
     public function borrowed(){
-        $borrows = Borrow::where('user_id', auth()->id())->with('book')->get();
+        $borrows = Borrow::with('book')->where('user_id', auth()->id())->latest()->get();
+
         return view('borrows.index', compact('borrows'));
     }
 
@@ -72,7 +73,10 @@ class BorrowController extends Controller
         if (!$borrow){
             return redirect()->route('borrows.index')->with('error', 'Invalid return request.');
         }
-
+        if (!$borrow->fine_paid){
+            return redirect()->route('borrows.index')->with('error', 'Pay your fine before you click return');
+        }
+        
         $book = Book::findOrFail($borrow->book_id);
 
         $borrow->update(['returned_at' => now()]);

@@ -54,4 +54,27 @@ class User extends Authenticatable
     public function borrows(){
         return $this->hasMany(Borrow::class);
     }
+
+    public function libraryCard(){
+        return $this->hasOne(LibraryCard::class);
+    }
+
+    public function hasActiveLibraryCard(){
+        $card = $this->libraryCard;
+
+        if (!$card){
+            return false;
+        }
+        return $card->isActive();
+    }
+
+    public function hasOutstandingFines(){
+            return $this->borrows()->whereNull('returned_at')->where('due_date', '<', now())->exists();
+        }
+
+    public function totalFine(){
+            return $this->borrows()->whereNull('returned_at')->where('due_date', '<', now())->get()->sum(function ($borrow) {
+            return $borrow->calculateFine();
+            });
+        }
 }

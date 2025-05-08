@@ -31,12 +31,14 @@
                 <table class="w-full border-collapse border border-gray-600">
                     <thead>
                         <tr class="bg-gray-700 text-white">
-                            <th class="border p-2">Title</th>
-                            <th class="border p-2">Author</th>
-                            <th class="border p-2">Borrowed Date</th>
-                            <th class="border p-2">Due Date</th>
-                            <th class="border p-2">Returned Date</th>
-                            <th class="border p-2">Actions</th>
+                            <th class="border px-2">Title</th>
+                            <th class="border px-2">Author</th>
+                            <th class="border px-2">Borrowed Date</th>
+                            <th class="border px-2">Due Date</th>
+                            <th class="border px-2">Returned Date</th>
+                            <th class="border px-2">Actions</th>
+                            <th class="border px-2">Status</th>
+                            <th class="border px-2">Fine</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -58,6 +60,29 @@
                                                 Return Book
                                             </button>
                                         </form>
+                                    @endif
+        
+                                            @if($borrow->fine_amount > 0)
+                                            <a href="{{ route('pay.fine', $borrow->id) }}" class="inline-block mt-1 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">Pay Fine</a>
+                                            @else
+                                            <span class="text-green-600 font-semibold">no fine</span>
+                                            @endif
+                    
+                                </td>
+                                <td class="border p-2">
+                                    @if($borrow->returned_at)
+                                        Returned
+                                        @elseif($borrow->due_date && now()->greaterThan($borrow->due_date))
+                                        Overdue
+                                    @else
+                                        Borrowed
+                                    @endif
+                                </td>
+                                <td class="border p-2">
+                                    @if($borrow->due_date && is_null($borrow->returned_at) && now()->greaterThan($borrow->due_date))
+                                         ₦{{ number_format($borrow->fine_amount) }}
+                                    @else
+                                        -
                                     @endif
                                 </td>
                             </tr>

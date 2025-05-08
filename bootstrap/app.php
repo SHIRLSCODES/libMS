@@ -16,6 +16,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'is_admin' => \App\Http\Middleware\AdminMiddleware::class,
             'is_active' => \App\Http\Middleware\CheckIfUserIsActive::class,
+            'has_library_card' => \App\Http\Middleware\CheckLibraryCard::class,
+            'has_outstanding_fines' => \App\Http\Middleware\CheckOutstandingFines::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

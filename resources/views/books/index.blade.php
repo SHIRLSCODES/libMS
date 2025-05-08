@@ -5,6 +5,13 @@
         </h2>
     </x-slot>
 
+    @if (auth()->user()->hasOutstandingFines())
+        <div class="bg-red-100 text-red-800 p-4 rounded mb-4">
+            You owe a fine for overdue books. Please settle it before borrowing new books.
+        </div>
+    @endif
+
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">

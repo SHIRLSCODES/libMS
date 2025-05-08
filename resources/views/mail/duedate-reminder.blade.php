@@ -13,7 +13,7 @@
 
     @else
      <p>Hello {{ $borrow->user->name }},</p>
-     <p>Your borrowed book "{{ $borrow->book->title }}" is overdue! It was due on {{ \Carbon\Carbon::parse($borrow->due_date)->format('d M Y') }}. Kindly return it as soon as possible.</p>
+     <p>Your borrowed book "{{ $borrow->book->title }}" is overdue! It was due on {{ \Carbon\Carbon::parse($borrow->due_date)->format('d M Y') }}, You currently owe a fine of ₦{{ number_format($fine) }}.</p>
     @endif
 
     <p>Thank you for using Smiles library services!</p>

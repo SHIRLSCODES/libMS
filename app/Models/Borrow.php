@@ -15,6 +15,8 @@ class Borrow extends Model
         'borrowed_at',
         'due_date',
         'returned_at',
+        'fine_amount',
+        'fine_paid',
     ];
 
     protected $casts = [
@@ -34,4 +36,15 @@ class Borrow extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function calculateFine()
+        {
+            if (!$this->due_date || $this->returned_at || now()->lessThanOrEqualTo($this->due_date)) {
+                return 0;
+            }
+
+            $daysOverdue = $this->due_date->diffInDays(now());
+
+            return 100 + ($daysOverdue * 100);
+        }
 }

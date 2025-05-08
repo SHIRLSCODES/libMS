@@ -38,7 +38,11 @@ class SendDueDateReminders extends Command
                     Mail::to($borrow->user->email)->send(new DueDateReminder($borrow, 'due'));
                 }
                 if ($daysLeft < 0) {
-                    Mail::to($borrow->user->email)->send(new DueDateReminder($borrow, 'overdue'));
+                    $fine = 100 + abs($daysLeft) * 100;
+
+                    $borrow->update(['fine_amount' => $fine, 'fine_paid' => false]);
+                     
+                    Mail::to($borrow->user->email)->send(new DueDateReminder($borrow, 'overdue', $fine));
                 }
             }
 

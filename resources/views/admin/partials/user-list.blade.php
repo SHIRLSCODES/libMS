@@ -7,6 +7,7 @@
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Admin</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Action</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider" >Library Card Status</th>
         </tr>
     </thead>
     <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
@@ -17,6 +18,7 @@
                 <td class="px-6 py-4 whitespace-nowrap">{{ $user->is_admin ? 'Yes' : 'No' }}</td>
                 <td class="px-6 py-4 whitespace-nowrap">
                     {{ $user->is_active ? 'Active' : 'Inactive' }}
+
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap ">
                     @if ($user->is_active)
@@ -43,6 +45,17 @@
                     </a> 
                     @endif
                 </td> 
+                <td>
+                    @if ($user->libraryCard)
+                        @if ($user->hasActiveLibraryCard())
+                            <span class="text-green-600">Active</span>
+                        @else
+                            <span class="text-red-600">Expired</span>
+                        @endif
+                    @else
+                        <span class="text-gray-500">No Card</span>
+                    @endif
+                </td>
             </tr>
         @endforeach
     </tbody>

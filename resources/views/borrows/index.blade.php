@@ -61,14 +61,24 @@
                                             </button>
                                         </form>
                                     @endif
+
+                                    @if (!$borrow->returned_at && $borrow->fine_amount == 0)
+                                        <form method="POST" action="{{ route('borrow.renew', $borrow->id) }}">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit" class="mt-2 px-3 py-1 bg-green-600 text-white rounded-md">
+                                                Renew Book for one day!
+                                            </button>
+                                        </form>
+                                    @endif
         
-                                            @if($borrow->fine_amount > 0)
-                                            <a href="{{ route('pay.fine', $borrow->id) }}" class="inline-block mt-1 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">Pay Fine</a>
-                                            @else
-                                            <span class="text-green-600 font-semibold">no fine</span>
-                                            @endif
-                    
+                                    @if($borrow->fine_amount > 0)
+                                        <a href="{{ route('pay.fine', $borrow->id) }}" class="inline-block mt-1 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">Pay Fine</a>
+                                    @else
+                                        <span class="text-green-600 font-semibold">no fine</span>
+                                    @endif
                                 </td>
+
                                 <td class="border p-2">
                                     @if($borrow->returned_at)
                                         Returned

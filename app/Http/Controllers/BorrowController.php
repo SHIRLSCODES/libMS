@@ -87,6 +87,24 @@ class BorrowController extends Controller
         
     }
 
+    public function renewBorrow($id){
+        $borrow = Borrow::where('id', $id)->where('user_id', auth()->id())->first();
+
+        if (!$borrow){
+            return redirect()->route('borrows.index')->with('error', 'Invalid return request.');
+        }
+        if (!$borrow->fine_paid){
+            return redirect()->route('borrows.index')->with('error', 'Pay your fine before you click renew');
+        }
+
+        $book = Book::findOrFail($borrow->book_id);
+
+        $borrow->update(['borrowed_date' => now()]);
+        $borrow->update(['due_date' => now()->addDays(1)]); 
+
+        return redirect()->route('borrows.index')->with('success', 'Book renewed successfully!');
+    }
+
     /**
      * Display the specified resource.
      */

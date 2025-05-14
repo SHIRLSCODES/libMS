@@ -53,6 +53,7 @@ Route::get('/dashboard', function () {
 
     Route::post('/borrow',[BorrowController::class, 'store'])->name('borrow.store')->middleware(['has_library_card', 'has_outstanding_fines']);
     Route::get('/borrows', [BorrowController::class, 'borrowed'])->name('borrows.index')->middleware('has_library_card');
+    Route::patch('/borrows/{id}/renew', [BorrowController::class, 'renewBorrow'])->name('borrow.renew')->middleware('has_library_card');
     Route::patch('/borrow/{id}/return', [BorrowController::class, 'returnBook'])->name('borrow.return')->middleware('has_library_card');
 
     Route::get('/library-card/subscribe', [LibraryCardController::class, 'showSubscribeForm'])->name('library-card.subscribe');
